@@ -56,9 +56,23 @@ def load_project_documents():
 
     return combined_text
 
+import os
+import streamlit as st
 from openai import OpenAI
 
-client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
+api_key = None
+
+try:
+    api_key = st.secrets["OPENAI_API_KEY"]
+except Exception:
+    pass
+
+if not api_key:
+    api_key = os.environ.get("OPENAI_API_KEY")
+
+client = OpenAI(api_key=api_key)
+
+MODEL_FAST = "gpt-4.1-mini"
 
 MODEL_FAST = "gpt-4.1-mini"
 MODEL_DEEP = "gpt-5.4"
